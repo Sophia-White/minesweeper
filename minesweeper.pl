@@ -3,6 +3,7 @@ minesweeper(Rows) :-
 	
 asatisfied(I) :-
 	anchor(I, X, Y, V),
+	madjlist(X, Y, LX, LY),
 	
 	
 
@@ -16,9 +17,14 @@ position(X, Y, M, E) :-
 	nth0(X, M, E).
 
 madjlist(X, Y, LX, LY) :-
-	length(LX, 8),
-	length(LY, 8),
-	
+	LX = (X1, X2, X3, X1, X2, X1, X2, X3),
+	LY = (Y1, Y1, Y1, Y2, Y2, Y3, Y3, Y3),
+	X1 is X-1,
+	X2 is X,
+	X3 is X+1,
+	Y1 is Y-1,
+	Y2 is Y,
+	Y3 is Y+1.
 
 madjacent(X1, Y1, X2, Y2) :-
 	mordd(X1, X2),
