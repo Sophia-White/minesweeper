@@ -11,6 +11,14 @@ minesweeperboard(Rows) :-
 	maplist(same_length(L), Rows),
         append(Rows, Values), Values ins 0..1.
 
+listpos(LX, LY, LE, M) :-
+	minesweeperboard(M),
+	same_length(LX, LY),
+	nth0(I, LE, E),
+	nth0(I, LX, X),
+	nth0(I, LY, Y),
+	position(X, Y, M, E).
+
 position(X, Y, M, E) :-
 	minesweeperboard(M),
 	nth0(Y, M, R),
