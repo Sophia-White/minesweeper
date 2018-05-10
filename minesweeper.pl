@@ -1,15 +1,23 @@
 minesweeper(Rows) :-
 	minesweeperboard(Rows),
-	
-asatisfied(I) :-
+	asatisfied(I, Rows),
+	num_anchors(N),
+	I ins 1...N.	
+
+asatisfied(I, M) :-
 	anchor(I, X, Y, V),
-	madjlist(X, Y, LX, LY),
-	
-	
+	madjlist(X, Y, M, L),
+	frequency(E, L, V),
+	E is 1.
 
 minesweeperboard(Rows) :-
 	maplist(same_length(L), Rows),
         append(Rows, Values), Values ins 0..1.
+
+madjlist(X, Y, M, L) :-
+	minesweeperboard(M),
+	adjlist(X, Y, LX, LY),
+	listpos(LX, LY, L, M).
 
 listpos(LX, LY, LE, M) :-
 	minesweeperboard(M),
@@ -24,7 +32,7 @@ position(X, Y, M, E) :-
 	nth0(Y, M, R),
 	nth0(X, M, E).
 
-madjlist(X, Y, LX, LY) :-
+adjlist(X, Y, LX, LY) :-
 	LX = (X1, X2, X3, X1, X2, X1, X2, X3),
 	LY = (Y1, Y1, Y1, Y2, Y2, Y3, Y3, Y3),
 	X1 is X-1,
@@ -48,6 +56,10 @@ mand(A, B) :- A,B.
 
 ladjacent(X, Y, L) :- nextto(X, Y, L).
 ladjacent(X, Y, L) :- nextto(Y, X, L).
+
+frequency(_, [], 0).
+frequency(X, [H|T], N) :- X \= H, frequency(X, T, N).
+frequency(X, [X|T], N) :- frequency(X, T, M), N is M+1.
 
 distinct_iops(A, B, C, D) :-
 	A \= C;
